@@ -28,7 +28,6 @@ var ExecutorAPIConstructor = function ExecutorAPI( executors ) {
 ExecutorAPIConstructor.prototype.setup = function ExecutorAPISetup( app, params ) {
   var me = this;
   app.post( params.http.base + 'executor', function ExecutorAPIExec( req, res ) {
-    console.log( req.body );
     var logs = me.api( req.body.code, req.body.language );
     res.jsonp( logs );
   });

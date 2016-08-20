@@ -14,7 +14,7 @@ import { Code } from '../models/Code';
 declare var CodeMirror: any;
 
 @Component({
-  template: '',
+  templateUrl: 'editor/editor.component.html',
   providers: [UserCodeService]
 })
 
@@ -25,6 +25,9 @@ export class ClientEditorComponent implements AfterViewInit, OnInit, OnDestroy {
   private email: string;
   private code: Code;
   private cMirror: any;
+
+  // Show this on the view
+  logs: string[];
 
   /**
    * The client component
@@ -79,5 +82,20 @@ export class ClientEditorComponent implements AfterViewInit, OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  /**
+   * Executes the current code.
+   *
+   * @returns {undefined} None
+   */
+  execute() {
+    this.service.executeCode( 'JavaScript', this.cMirror.doc.getValue() )
+      .subscribe( logs => this.logs = logs,
+                  error => this.logs = [<any>error]);
+  }
+
+  submit() {
+
   }
 }
