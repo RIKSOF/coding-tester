@@ -38,3 +38,6 @@ jspm_packages
 
 # Client compilations
 dist
+
+# Do not upload vagrant box
+.vagrant

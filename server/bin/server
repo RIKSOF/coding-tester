@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+'use strict';
+
+// Provide a title to the process in `ps`
+process.title = 'coding-tester-server';
+
+// Load the modules
+var mods = require('../');
+
+// Build the configurations.
+var params = new mods.Config();
+
+// Get command line parameters
+var argv = require('minimist')( process.argv.slice(2) );
+
+// Overwrite defaults with our configurations.
+params.defaults( argv );
+
+// Setup the logger.
+mods.Services.Logger.setup( params );
+
+// If user requested to print configuration.
+if ( argv.print === true ) {
+  mods.Services.Logger.l.info( 'Here is the final configuration being used ' +
+    JSON.stringify( params, null, 2 ) );
+}
+
+// Setup the server and then start it.
+var server = new mods.Services.Server();
+
+// Add the APIs.
+var executorAPI = new mods.API.ExecutorAPI( mods.Executors );
+executorAPI.setup( server.app, params );
+
+server.start( params );
+
+mods.Services.Logger.l.info( 'Service started' );
