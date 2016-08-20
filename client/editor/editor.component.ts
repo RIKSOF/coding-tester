@@ -53,8 +53,6 @@ export class ClientEditorComponent implements AfterViewInit, OnInit, OnDestroy {
       if ( this.code === undefined ) {
         this.code = this.service.getCodeForLang( this.language, this.email );
       }
-
-      console.log( eval( this.code.program ) );
     });
   }
 
@@ -67,7 +65,10 @@ export class ClientEditorComponent implements AfterViewInit, OnInit, OnDestroy {
   ngAfterViewInit() {
     this.cMirror = CodeMirror( this.elementRef.nativeElement, {
       value: this.code.program,
-      mode:  this.code.getProgrammingLangauge()
+      mode:  this.code.getProgrammingLangauge(),
+      lineNumbers: true,
+      tabSize: 2,
+      autofocus: true
     });
   }
 
