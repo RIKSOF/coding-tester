@@ -6,16 +6,20 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Headers, RequestOptions } from '@angular/http';
+import { Headers, RequestOptions, URLSearchParams } from '@angular/http';
 
 import { UserCodeSource } from './UserCodeSource';
+import { Code } from './Code';
 
 @Injectable()
 export class UserCodeService {
   datasource: UserCodeSource;
 
   // URL to execute code
-  private executorAPIEndpoint = 'http://localhost:3001/api/executor';
+  private executorAPIEndpoint = 'http://localhost:3000/api/executor';
+
+  // URL to get code template
+  private templateAPIEndpoint = 'http://localhost:3000/api/templates';
 
   /**
    * Default constructor initializes data source.
@@ -39,19 +43,6 @@ export class UserCodeService {
   }
 
   /**
-   * Get the code for given language.
-   *
-   * @param {string} lang   Language to get the code for. Each lang has just
-   *                        one code.
-   * @param {string} email  Email of user.
-   *
-   * @returns {Code}        Code object.
-   */
-  getCodeForLang ( lang: string, email: string ) {
-    return this.datasource.getCodeForLang( lang, email );
-  }
-
-  /**
    * Execute the code for given language.
    *
    * @param {string} lang   Language to get the code for. Each lang has just
@@ -68,7 +59,43 @@ export class UserCodeService {
     return this.http.post(this.executorAPIEndpoint, body, options)
       .map( this.extractData )
       .catch( this.handleError );
-   }
+  }
+
+  /**
+   * Get the code for given language.
+   *
+   * @param {string} lang   Language to get the code for. Each lang has just
+   *                        one code.
+   *
+   * @returns {string} Output code
+   */
+  getCodeTemplate (lang: string, email: string): Observable<Code> {
+    let me = this;
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('language', lang);
+
+    return this.http.get(this.templateAPIEndpoint, {
+      search: params
+    })
+    .map( function GetCodeTemplateResponse( res: Response ) {
+      var prog = me.extractData( res ).code;
+      return me.datasource.getCodeForLang( email, prog, lang );
+    })
+    .catch( this.handleError );
+  }
+
+  /**
+   * Get the code for given language.
+   *
+   * @param {string} lang   Language to get the code for. Each lang has just
+   *                        one code.
+   * @param {string} email  Email of user.
+   *
+   * @returns {Code}        Code object.
+   */
+  getCodeFromData ( lang: string, email: string ) {
+    return
+  }
 
   /**
    * Map response to json.

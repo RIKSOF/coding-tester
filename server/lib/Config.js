@@ -28,6 +28,12 @@ var ConfigConstructor = function Config() {
     enableSSL: false,
     base: '/api/'
   }
+
+  // Code base
+  this.code = {
+    dir: __dirname + '/../code/',
+    ext: '.txt'
+  }
 };
 
 /**

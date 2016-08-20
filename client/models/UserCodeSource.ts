@@ -15,13 +15,10 @@ var CodeDataForUser: {
 };
 
 // The code for a given language.
-var CodeDataForLanguage: {
-  [lang: string]: { lang: ProgrammingLanguage, program: string };
+var CodeForLanguage: {
+  [lang: string]: ProgrammingLanguage
 } = {
-  'javascript': {
-    lang: ProgrammingLanguage.JavaScript,
-    program: 'function myScript() {\n    return 101;\n}; myScript();\n'
-  }
+  'javascript': ProgrammingLanguage.JavaScript
 };
 
 export class UserCodeSource {
@@ -56,12 +53,13 @@ export class UserCodeSource {
    *
    * @param {string} lang   Language to get the code for. Each lang has just
    *                        one code.
+   * @param {string} prog   The program posted.
    * @param {string} email  Email of user.
    *
    * @returns {Code}        Code object.
    */
-  getCodeForLang ( lang: string, email: string ) {
-    var c = CodeDataForLanguage[ lang ];
-    return new Code( email, c.program, c.lang );
+  getCodeForLang ( email: string, prog: string, lang: string ) {
+    var c = CodeForLanguage[ lang ];
+    return new Code( email, prog, c );
   }
 }

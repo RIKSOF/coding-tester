@@ -54,7 +54,13 @@ export class ClientEditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
       // If this user does not have code posted, we get the default code.
       if ( this.code === undefined ) {
-        this.code = this.service.getCodeForLang( this.language, this.email );
+        this.service.getCodeTemplate( this.language, this.email )
+          .subscribe(
+            code => {
+              this.code = code;
+              this.cMirror.doc.setValue( this.code.program );
+            },
+            error =>  this.code = <any>error);
       }
     });
   }
@@ -67,8 +73,7 @@ export class ClientEditorComponent implements AfterViewInit, OnInit, OnDestroy {
    */
   ngAfterViewInit() {
     this.cMirror = CodeMirror( this.elementRef.nativeElement, {
-      value: this.code.program,
-      mode:  this.code.getProgrammingLangauge(),
+      mode:  this.language,
       lineNumbers: true,
       tabSize: 2,
       autofocus: true

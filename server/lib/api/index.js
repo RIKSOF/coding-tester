@@ -7,4 +7,5 @@
  */
 module.exports = {
   ExecutorAPI: require('./ExecutorAPI.js'),
+  CodeTemplatesAPI: require('./CodeTemplatesAPI.js')
 };

@@ -1,0 +1,17 @@
+/**
+ * @author Copyright RIKSOF (Private) Limited 2016.
+ *
+ * @file This JavaScript code is a partial solution to
+ */
+
+/**
+ * This is the main function of the application. It will be invoked from the
+ * test system with randomly generated arguments.
+ *
+ * @param {Array.string} sentence       Sentence with a word in each element
+ */
+function main( sentence ) {
+  console.log( 'We are passed this array: ' + JSON.stringify( sentence ) );
+}
+
+main( [ 'Hello', 'World', 'from', 'Karachi', 'Pakistan' ] );
